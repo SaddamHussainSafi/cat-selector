@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cat Selector App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    button, input {
+      margin: 5px;
+      padding: 5px 10px;
+    }
+    .output {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: #fff;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h2>Cat Selector App</h2>
+
+  <button onclick="showAllNames()">All Names</button><br><br>
+
+  <label>Health Issues:</label>
+  <input type="number" id="healthInput">
+  <button onclick="filterByHealth()">Search</button><br><br>
+
+  <label>Units:</label>
+  <input type="radio" name="unit" value="imperial" checked>Imperial
+  <input type="radio" name="unit" value="metric">Metric
+  <button onclick="showWeights()">Weight</button><br><br>
+
+  <button onclick="showIntelligence()">Intelligence - Friendly</button><br><br>
+
+  <button onclick="showAvgIntelligence()">Average Intelligence</button><br><br>
+
+  <button onclick="showAvgForChildFriendly()">Average Intelligence for Child Friendly = 4</button>
+
+  <div class="output" id="output"><<-- All Results should be displayed here --></div>
+
+  <script>
+    let cats = [];
+
+    // Load data from external source
+    fetch("https://api.thecatapi.com/v1/breeds")
+      .then(res => res.json())
+      .then(data => cats = data)
+      .catch(err => console.error("Failed to fetch cat data", err));
+
+    function showAllNames() {
+      const names = cats.map(cat => cat.name).join('\n');
+      displayOutput(`All names (total = ${cats.length}):\n\n${names}`);
+    }
+
+    function filterByHealth() {
+      const val = parseInt(document.getElementById('healthInput').value);
+      const result = cats.filter(cat => cat.health_issues === val);
+      const names = result.map(cat => cat.name).join('\n');
+      displayOutput(`Cats with health issue #${val}:\n\n${names}\n\ntotal = ${result.length}`);
+    }
+
+    function showWeights() {
+      const unit = document.querySelector('input[name="unit"]:checked').value;
+      const weights = cats.map(cat => {
+        return `${cat.name} : ${cat.weight[unit]} ${unit}`;
+      }).join('\n');
+      displayOutput(`Weights in ${unit}:\n\n${weights}`);
+    }
+
+    function showIntelligence() {
+      const result = cats.map(cat => {
+        return `${cat.name} -> I: ${cat.intelligence}, F: ${cat.child_friendly}`;
+      }).join('\n');
+      displayOutput(`Intelligence and Child-Friendly Factor:\n\n${result}`);
+    }
+
+    function showAvgIntelligence() {
+      const avg = average(cats.map(cat => cat.intelligence));
+      displayOutput(`Average Intelligence : ${avg.toFixed(2)}`);
+    }
+
+    function showAvgForChildFriendly() {
+      const filtered = cats.filter(cat => cat.child_friendly === 4);
+      const avg = average(filtered.map(cat => cat.intelligence));
+      displayOutput(`Average Intelligence for Child Friendly = 4:\n\nAverage Intelligence : ${avg.toFixed(2)}`);
+    }
+
+    function average(arr) {
+      return arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+    }
+
+    function displayOutput(text) {
+      document.getElementById('output').innerText = text;
+    }
+  </script>
+</body>
+</html>
