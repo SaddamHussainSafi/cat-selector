@@ -34,10 +34,10 @@ This app fetches data from [The Cat API](https://api.thecatapi.com/v1/breeds) an
 
 > The app interface includes buttons, inputs, and a result box where output is shown — matching the structure shown in the assignment instructions.
 
-<img src="images/image (1).jpg" alt="Cat" width="300">
-<img src="images/image (1).webp" alt="Cat" width="300">
-<img src="images/image (3).jpg" alt="Cat" width="300">
-<img src="images/image (2).jpg" alt="Cat" width="300">
+<img src="images/image1.jpg" alt="Cat" width="300">
+<img src="images/image2.webp" alt="Cat" width="300">
+<img src="images/image3.jpg" alt="Cat" width="300">
+<img src="images/image4.jpg" alt="Cat" width="300">
 
 
 
